@@ -1,0 +1,20 @@
+services:
+  videodb-service-db:
+    #platform: linux/x86_64
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=db
+    image: mysql:latest
+    ports:
+      - "7200:3306"
+    volumes:
+     - ./db:/var/lib/mysql
+     - ./seed:/docker-entrypoint-initdb.d/  # Mount backup SQL file
+    user: mysql
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "7300:80"
+    volumes:
+      - ./phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
