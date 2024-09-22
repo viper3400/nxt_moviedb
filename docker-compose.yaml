@@ -1,5 +1,17 @@
 services:
-  videodb-service-db:
+  movie-service:
+    build:
+      context: "."
+      dockerfile: "./movie-service/Dockerfile"
+    depends_on:
+      movie-service-db:
+        condition: service_healthy  # Wait until MySQL is healthy
+    ports:
+      - "7100:7100"
+    volumes:
+      - ./movie-service:/opt/app
+
+  movie-service-db:
     #platform: linux/x86_64
     environment:
       - MYSQL_ROOT_PASSWORD=password
@@ -11,8 +23,16 @@ services:
      - ./db:/var/lib/mysql
      - ./seed:/docker-entrypoint-initdb.d/  # Mount backup SQL file
     user: mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 --silent"]
+      interval: 10s   # Check every 10 seconds
+      timeout: 5s
+      retries: 5      # Retry up to 5 times before considering the service unhealthy
+      start_period: 30s  # Allow up to 30s for MySQL to initialize
   
   phpmyadmin:
+    depends_on:
+    - movie-service-db
     image: phpmyadmin/phpmyadmin
     ports:
       - "7300:80"
