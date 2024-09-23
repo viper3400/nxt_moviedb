@@ -1,13 +1,7 @@
-import { Express } from "express";
-import { PrismaClient } from '@prisma/client';
-import { time } from "console";
+import { Express } from "express"
+import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
-async function main() {
-    // ... you will write your Prisma Client queries here
-    const allGenres = await prisma.videodb_videogenre.findMany()
-    console.log(allGenres)
-  }
 
 const setupRoutes = (app: Express) => {
     app.get("/genres/:id", async (req, res, next) => {
@@ -16,13 +10,13 @@ const setupRoutes = (app: Express) => {
                 where: {
                     id: parseInt(req.params.id, 10) 
                 }
-            });
+            })
 
-            if (!user) return next(new Error("Invalid genre id!"));
+            if (!user) return next(new Error("Invalid genre id!"))
 
-            return(res.json(user));
+            return(res.json(user))
         } catch (err) {
-            return next(err);
+            return next(err)
         }
     })
 
@@ -32,24 +26,24 @@ const setupRoutes = (app: Express) => {
                 where: {
                     id: parseInt(req.params.id, 10) 
                 }
-            });
+            })
 
-            if (!user) return next(new Error("Invalid genre id!"));
+            if (!user) return next(new Error("Invalid genre id!"))
 
-            return(res.json(user));
+            return(res.json(user))
         } catch (err) {
-            return next(err);
+            return next(err)
         }
     })
 
     app.get("/movies", async (req, res, next) => {
-        const { title, take } = req.query;
+        const { title, take } = req.query
     
         try {
             // Type narrowing: Ensure `title` is a valid string
             if (typeof title === 'string' && title.trim().length > 2) {
                 // Parse 'take' as an integer if it's a valid string number
-                const takeValue = typeof take === 'string' ? parseInt(take) : undefined;
+                const takeValue = typeof take === 'string' ? parseInt(take) : undefined
     
                 // Build the query object dynamically
                 const queryOptions = {
@@ -64,20 +58,20 @@ const setupRoutes = (app: Express) => {
                         id: true
                     },
                     ...(takeValue && takeValue > 0 ? { take: takeValue } : {}) // Dynamically add 'take' if valid
-                };
+                }
     
-                const result = await prisma.videodb_videodata.findMany(queryOptions);
+                const result = await prisma.videodb_videodata.findMany(queryOptions)
     
-                if (!result) return next(new Error("Invalid request!"));
+                if (!result) return next(new Error("Invalid request!"))
     
-                return res.json(result);
+                return res.json(result)
             } else {
-                return res.json(""); // If title is not valid, return empty response
+                return res.json("") // If title is not valid, return empty response
             }
         } catch (err) {
-            return next(err);
+            return next(err)
         }
-    });
+    })
 }
 
-export default setupRoutes;
+export default setupRoutes

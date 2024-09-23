@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-import startServer from '#root/server/startServer';
+import { PrismaClient } from '@prisma/client'
+import startServer from '#root/server/startServer'
 
 const prisma = new PrismaClient()
 
@@ -7,7 +7,7 @@ async function main() {
   // ... you will write your Prisma Client queries here
   const genreCount = await prisma.videodb_genres.count()
   console.log(genreCount)
-  startServer();
+  startServer()
 }
 export const initConnection = () =>
 main()
