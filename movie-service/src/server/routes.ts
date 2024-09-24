@@ -55,7 +55,9 @@ const setupRoutes = (app: Express) => {
                     select: {
                         title: true,
                         subtitle: true,
-                        id: true
+                        diskid: true,
+                        id: true,
+                        imgurl: true
                     },
                     ...(takeValue && takeValue > 0 ? { take: takeValue } : {}) // Dynamically add 'take' if valid
                 }
