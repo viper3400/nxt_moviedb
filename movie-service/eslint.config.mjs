@@ -15,6 +15,7 @@ export default [
     rules: {
       // Enforce semicolons at the end of statements
       'semi': ['error', 'never'],  // 'always' requires semicolons; use 'never' if you want to disallow them
+      '@typescript-eslint/no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }]
     }
   }
 ]
