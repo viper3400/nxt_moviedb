@@ -20,5 +20,7 @@ jobs:
           node-version: 20
       - name: Install dependencies
         run: yarn install
+        working-directory: ./movie-service
       - name: Lint
         run: yarn run lint
+        working-directory: ./movie-service
