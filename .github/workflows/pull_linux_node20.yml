@@ -24,3 +24,6 @@ jobs:
       - name: Lint
         run: npm run lint
         working-directory: ./movie-service
+      - name: Compile
+        run: npm run compile
+        working-directory: ./movie-service
