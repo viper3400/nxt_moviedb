@@ -19,8 +19,8 @@ jobs:
         with:
           node-version: 20
       - name: Install dependencies
-        run: corepack enable && yarn && yarn install
+        run: npm ci
         working-directory: ./movie-service
       - name: Lint
-        run: yarn run lint
+        run: npm run lint
         working-directory: ./movie-service

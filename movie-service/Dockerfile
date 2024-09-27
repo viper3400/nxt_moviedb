@@ -2,6 +2,6 @@ FROM node:20
 
 WORKDIR /opt/app
 
-RUN corepack enable && yarn
+#RUN npm ci
 
-CMD yarn watch
+CMD npm ci && npm run watch
