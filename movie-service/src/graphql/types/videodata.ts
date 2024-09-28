@@ -14,20 +14,25 @@ builder.prismaObject('videodb_videodata', {
   })
 })
 
-// Define the queryField and add an argument for filtering by 'title'
+// Define the queryField and add an argument for filtering by 'title' and 'disikd'
 builder.queryField("videodb_videodata", (t) =>
   t.prismaField({
     type: ['videodb_videodata'],
     args: {
-      title: t.arg.string(), // Add the 'title' argument
+      title: t.arg.string(),
+      diskid: t.arg.string()
     },
     resolve: (query, _parent, args, _ctx, _info) => {
-      const { title } = args // Extract the title from the args
+      const { title, diskid } = args // Extract the title and diskid from the args
 
       // If 'title' is provided, filter based on the title
       return prisma.videodb_videodata.findMany({
         where: {
-          title: title ? { contains: title } : undefined, // Apply title filter if provided
+          OR: [
+            { title: title ? { contains: title } : undefined }, // Apply title filter if provided
+            { subtitle: title ? { contains: title } : undefined }
+          ],
+          diskid: diskid ? { startsWith: diskid } : undefined, // Apply diskid filter if provided
         },
         ...query, // Spread any query information
       })
