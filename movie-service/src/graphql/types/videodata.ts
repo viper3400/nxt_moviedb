@@ -64,9 +64,9 @@ builder.queryField("videos", (t) =>
       genreName: t.arg.string(),
       mediaType: t.arg.stringList()
     },
-    resolve: async (query, _parent, args, _ctx, _info) => {
+    resolve: async (query, _parent, args, _ctx: any, _info) => {
       const { title, diskid, genreName, mediaType } = args; // Extract the title and diskid from the args
-      
+      console.log(_ctx.jwt)
       return await prisma.videodb_videodata.findMany({
         where: {
           AND: [
@@ -93,21 +93,25 @@ builder.queryField("videos", (t) =>
             },
           ],
         },
-        include: {
+        select: { // Only select the fields you need
+          id: true, // example field
+          title: true, // example field
+          diskid: true, // example field
+          // Add other fields that you need
           videodb_videogenre: {
             select: {
               genre: {
                 select: {
-                  name: true, // Select genre name
+                  name: true,
                 },
               },
             },
           },
           videodb_mediatypes: {
             select: {
-              name: true
-            }
-          }
+              name: true,
+            },
+          },
         },
         ...query, // Spread any query information
       });

@@ -1,4 +1,15 @@
 services:
+  react-demo-service:
+    build:
+      context: "."
+      dockerfile: "./react-demo-service/Dockerfile"
+    depends_on:
+      - movie-service
+    ports:
+      - "7400:3000"
+    volumes:
+      - ./react-demo-service:/opt/app
+
   movie-service:
     build:
       context: "."
